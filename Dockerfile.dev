@@ -1,0 +1,16 @@
+FROM python:3.10.14-slim
+ENV PYTHONDONTWRITEBYTECODE=1
+ENV PYTHONUNBUFFERED=1
+WORKDIR /HealthTracker
+COPY requirements.txt /HealthTracker/
+RUN pip install -r requirements.txt
+COPY . /HealthTracker/
+
+# Ensure the user running the app has appropriate permissions
+RUN chown -R www-data:www-data /HealthTracker
+
+# Run as non-root user
+USER www-data
+
+# Print the contents of the copied directory
+RUN echo "Contents of /:" && ls -la /HealthTracker
